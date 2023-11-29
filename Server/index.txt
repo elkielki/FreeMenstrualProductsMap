@@ -1,0 +1,130 @@
+// https://stackoverflow.com/questions/53879339/mongo-db-is-not-updating-document-with-set
+for object inside of objects
+
+app.use(cors())
+app.use(express.json())
+/*app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost');
+    res.header('Referrer-Policy', 'no-referrer-when-downgrade');
+  });  */
+
+mongoose.connect('mongodb+srv://firstUser:TDL1Project082923*@todolistcalendar.yg2in1e.mongodb.net/test')
+
+app.get('/get', (req, res) => {
+    TodoModel.find()
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.get('/getCategories', (req, res) => {
+    CategoryModel.find()
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.get('/getFilter', (req, res) => {
+    MiscellaneousModel.find().limit(1)
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.put('/update/:id', (req, res) => {
+    const {id} = req.params;
+    const status = req.body.status;
+    const category = req.body.category;
+    TodoModel.findByIdAndUpdate({
+        _id: id, 
+        status: status,
+        category: category
+    }).limit(1)
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.put('/updateFilter', (req, res) => {
+    const filter = req.body.filter;
+    MiscellaneousModel.create({
+        filter: filter
+    }).then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.delete('/delete/:id', (req, res) => {
+    const {id} = req.params;
+    TodoModel.findByIdAndDelete({_id: id}).limit(1)
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.delete('/deleteCategory/:id', (req, res) => {
+    const {id} = req.params;
+    CategoryModel.findByIdAndDelete({_id: id})
+    .then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+/*app.post('/', async function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Referrer-Policy', 'no-referrer-when-downgrade');
+
+    const redirectUrl = 'http://127.0.0.1.3000/oauth';
+
+    const oAuth2Client = new OAuth2Client(
+        "888183686988-shudmqmpbt8cd7tfiie2leanjdccd2di.apps.googleusercontent.com",
+        "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",
+        redirectUrl
+    )
+})*/
+app.post('/add', (req, res) => {
+    const task = req.body.task;
+    const category = req.body.category;
+    TodoModel.create({
+        task: task,
+        status: 'Not Started',
+        category: category
+    }).then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.post('/addCategory', (req, res) => {
+    const category = req.body.category;
+    CategoryModel.create({
+        category: category
+    }).then(result => res.json(result))
+    .catch(err => res.json(err))
+})
+
+app.post('/', (req, res) => {
+    const id = req.body.id;
+    // I can't tell whether it's actually entering into this after sending the axios post from app.jsx. Nothing is showing up in the database. 
+    // I'll have to look into what findOne does if it doesn't find anything. or what the result of findone is.
+    UserModel.create({
+        userId: id,
+        filter: false,
+        todo: [],
+        category: ["uncategorized"]
+    }).then(result => res.json(result))
+    .catch(err => res.json(err))  
+    /*
+    const result = UserModel.find({userId: id}).limit(1)
+    .then(result => {
+        if (result === null) {
+            UserModel.create({
+                userId: id,
+                filter: false,
+                todo: [],
+                category: ["uncategorized"]
+            }).then(result => res.json(result))
+            .catch(err => res.json(err))  
+        }
+        else {
+            console.log("It was found.")
+            app.get((req, res) => {
+                UserModel.find()
+                .then(result => res.json(result))
+                .catch(err => res.json(err))
+            }) 
+        }
+    })
+    .catch(err => res.json(err))  */
+})
