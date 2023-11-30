@@ -2,11 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv').config()
 const mongoose = require('mongoose');
 const cors = require('cors');
-//import TodoModel from './Models/Todo';
-const CategoryModel = require('./Models/Category');
-// const MiscellaneousModel = require('./Models/Miscellaneous');
-//const UserModel = require('./Models/User');
 const cookieParser = require('cookie-parser')
+const CategoryModel = require('./Models/Category');
 
 const app = express()
 

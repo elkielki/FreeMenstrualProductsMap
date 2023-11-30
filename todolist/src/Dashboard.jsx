@@ -1,23 +1,21 @@
-import React, { useState, useContext } from 'react';
-//import { UserContext } from '../context/userContext';
-import { useAuth } from '../context/AuthContext';
-import CreateTask from './CreateTask'
-import Axios from './axiosSetup'
-import { ChakraProvider, Button, Box, Text, IconButton, VStack } from '@chakra-ui/react'
-import { DeleteIcon } from '@chakra-ui/icons'
-import 'react-calendar/dist/Calendar.css';
-import CreateCategory from './CreateCategory';
-import Task from './Task';
-import theme from './Theme';
+import React, { useState, useContext, useEffect } from 'react';
+import { ChakraProvider, Button, Box, Text, IconButton, VStack } from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import Logout from './Logout';
-//import { io } from "socket.io-client";
+import theme from './theme/Theme';
+import Axios from './axiosSetup';
+import { UserContext } from './context/userContext';
+//import { useAuth } from '../context/AuthContext';
+import CreateTask from './components/CreateTask';
+import CreateCategory from './components/CreateCategory';
+import Task from './components/Task';
+import Logout from './components/Logout';
 
 export default function Dashboard() {
-    //const {user} = useContext(UserContext)
+  //  const {user} = useContext(UserContext)
 //    const {user, setUser} = useContext(UserContext);
-    const {user, setUser, isLoggedIn, setIsLoggedIn} = useAuth();
-    const navigate = useNavigate()
+    const {user} =  useContext(UserContext);//useAuth();
+    const navigate = useNavigate();
     const [todos, setTodos] = useState(user.todos);
     const [categories, setCategories] = useState(user.categories);
     const [filter, setFilter] = useState(user.filter);
@@ -95,7 +93,7 @@ export default function Dashboard() {
         })
         .catch(err => console.log(err))
     } 
-
+//!!user
     return (
         <ChakraProvider theme={theme} >
         <VStack>
@@ -108,6 +106,13 @@ export default function Dashboard() {
             ) : 
             (<h2>Hello! Tasks will not be saved. Please create an account to save your tasks.</h2>)}
             <h2>Todo List</h2>
+        </VStack>
+    </ChakraProvider>
+    )
+}
+
+/* 
+            
             <h2>{'filter' + filter}</h2>
             <Button onClick={handleFilter}>Filter</Button>
             <CreateCategory update={callbackNewCategory} />
@@ -147,12 +152,9 @@ export default function Dashboard() {
                 </VStack>
             }
         </VStack>
-    </ChakraProvider>
-    )
-}
 
-/* 
-            
+
+
 
 
             

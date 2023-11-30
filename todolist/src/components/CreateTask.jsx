@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Axios from './axiosSetup'
-//import axios from "axios";
-import {Input, Flex, HStack, Box, VStack, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Text, Menu, MenuItem, MenuButton, MenuList, Button, PopoverTrigger, Popover, PopoverBody, PopoverContent, PopoverArrow, PopoverCloseButton} from '@chakra-ui/react';
-import { ChevronDownIcon } from '@chakra-ui/icons'
+import { Input, Flex, HStack, Box, VStack, Accordion, AccordionItem, AccordionButton, AccordionIcon, AccordionPanel, Text, Menu, MenuItem, MenuButton, MenuList, Button, PopoverTrigger, Popover, PopoverBody, PopoverContent, PopoverArrow, PopoverCloseButton} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { toast } from 'react-hot-toast';
+import Axios from '../axiosSetup'
 import { UserContext } from '../context/userContext';
-import {toast} from 'react-hot-toast'
 
 function CreateTask({update}) {
     //const {user} = useContext(UserContext)

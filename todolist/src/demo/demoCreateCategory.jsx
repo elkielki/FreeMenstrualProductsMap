@@ -1,11 +1,6 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
-//import Axios from './axiosSetup'
-import { Button, Input, Checkbox, Box, PopoverFooter, Select, Text, Popover, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverTrigger, PopoverBody, PopoverContent, IconButton, HStack, VStack, useDisclosure } from '@chakra-ui/react'
-//import { UserContext } from '../context/userContext';
-import {toast} from 'react-hot-toast'
-//import Task from './Task';
-//import theme from './Theme';
-import {Portal} from 'react-portal';
+import React, { useState, useRef } from 'react';
+import { Button, Input, Popover, PopoverCloseButton, PopoverHeader, PopoverTrigger, PopoverBody, PopoverContent } from '@chakra-ui/react';
+import { toast } from 'react-hot-toast';
 
 export default function DemoCreateCategory({update, data}) {
     const [categoryInput, setCategoryInput] = useState('');

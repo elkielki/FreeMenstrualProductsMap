@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import CreateTask from './CreateTask'
 import axios from 'axios'
-import { BsCircleFill, BsFillTrashFill, BsFillCheckCircleFill } from "react-icons/bs"
 import { ChakraProvider, Flex, Button, Box, Select, Text, IconButton, HStack } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 

@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Axios from './axiosSetup'
 import { Button, Input, Checkbox, Select, Text, Popover, PopoverArrow, PopoverCloseButton, PopoverHeader, PopoverTrigger, PopoverBody, PopoverContent, IconButton, HStack, VStack, useDisclosure } from '@chakra-ui/react'
+import { toast } from 'react-hot-toast'
+import Axios from '../axiosSetup'
 import { UserContext } from '../context/userContext';
-import {toast} from 'react-hot-toast'
-import Task from './Task';
-import theme from './Theme';
 
 export default function CreateCategory({update}) {
-    //const {user} = useContext(UserContext)
+   // const {user} = useContext(UserContext)
     const {user, setUser} = useContext(UserContext);
     const [categoryInput, setCategoryInput] = useState('');
     const [close, setClosed] = useState(false);

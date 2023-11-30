@@ -1,14 +1,15 @@
-import {useState, useRef} from 'react'
-import { useToast } from '@chakra-ui/react'
+import {useState, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom'
-import Axios from './axiosSetup';
+import Axios from '../axiosSetup';
 
 export default function Register() {
     const [data, setData] = useState({
         email: '',
         password: '',
     })
+    const {user, setUser, isLoggedIn, setIsLoggedIn} = useAuth();
 
     // need to edit the base data to include the other stuff like filter, categories, etc
     const registerUser = async (e) => {

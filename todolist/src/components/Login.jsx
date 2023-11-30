@@ -1,11 +1,12 @@
-import {useState} from 'react';
-import Axios from './axiosSetup';
-import {toast} from 'react-hot-toast'
-import {useNavigate} from 'react-router-dom'
-import { useAuth } from '../context/AuthContext';
+import React, { useState, useContext } from 'react';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Axios from '../axiosSetup';
+//import { useAuth } from '../context/AuthContext';
+import { UserContext } from '../context/userContext';
 
 export default function Login() {
-    const {user, setUser, isLoggedIn, setIsLoggedIn} = useAuth();
+//    const {user, setUser, isLoggedIn, setIsLoggedIn} = useContext(UserContext);//useAuth();
     const navigate = useNavigate(); 
     const [data, setData] = useState({
         email: '',
@@ -16,8 +17,8 @@ export default function Login() {
     })
 
     const loginUser = async (e) => {
-        e.preventDefault();
-        const {email, password, todos, filter, categories} = data
+        e.preventDefault(); // , todos, filter, categories
+        const {email, password} = data
         try {
             const {data} = await Axios.post('/login', {
                 email: email,
@@ -29,11 +30,6 @@ export default function Login() {
             if (data.error) {
                 toast.error(data.error)
             } else {
-                setIsLoggedIn(true);
-                Axios.get('/profile')
-                .then(({profileData}) => {
-                    setUser(profileData)
-                })
                 setData({
                     email: '',
                     password: '',

@@ -1,11 +1,10 @@
 import React, { useState, useEffect, createContext } from 'react'
-import { BsCircleFill, BsFillTrashFill, BsFillCheckCircleFill } from "react-icons/bs"
 import { ChakraProvider, Flex, Button, Box, Select, Text, IconButton, HStack, VStack, Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuDivider } from '@chakra-ui/react'
 import { DeleteIcon, ChevronRightIcon, AddIcon, EditIcon } from '@chakra-ui/icons'
-import Task from './Task';
+import Task from './components/Task';
 import DemoCreateCategory from './demo/demoCreateCategory';
 import DemoCreateTask from './demo/demoCreateTask';
-import theme from './Theme';
+import theme from './theme/Theme';
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
