@@ -2,30 +2,23 @@ import React, { useState, useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../axiosSetup';
-//import { useAuth } from '../context/AuthContext';
 import { UserContext } from '../context/userContext';
 
 export default function Login() {
-//    const {user, setUser, isLoggedIn, setIsLoggedIn} = useContext(UserContext);//useAuth();
     const navigate = useNavigate(); 
     const [data, setData] = useState({
         email: '',
         password: '',
-    //    todos: [], 
-    ///    filter: false,
-   //     categories: ['Uncategorized']
     })
+    const {user, setUser, loggedIn, setLogin} = useContext(UserContext);
 
     const loginUser = async (e) => {
-        e.preventDefault(); // , todos, filter, categories
+        e.preventDefault(); 
         const {email, password} = data
         try {
             const {data} = await Axios.post('/login', {
-                email: email,
-                password: password,
-            //    todos: todos,
-            //    filter: filter,
-            //    categories: categories
+                email,
+                password,
             });
             if (data.error) {
                 toast.error(data.error)
@@ -33,10 +26,9 @@ export default function Login() {
                 setData({
                     email: '',
                     password: '',
-                //    todos: [], 
-               //     filter: false,
-                //    categories: ['Uncategorized']
                 });
+                setLogin(true);
+                window.localStorage.setItem("logged-in", JSON.stringify(true));
                 navigate('/dashboard')
             }
         } catch (error) {
@@ -55,4 +47,39 @@ export default function Login() {
             </form>
         </div>
     )
-}
+}    
+ /*   
+
+
+
+
+const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const {user, setUser, loggedIn, setLogin} = useContext(UserContext);
+
+    const loginUser = (e) => {
+        e.preventDefault();
+        Axios.post('/login', {email, password})
+        .then(res => {
+            if (res.data.Status === "Success") {
+                setLogin(true);
+                navigate('/dashboard');
+            } else {
+                navigate('/');
+            }
+        }).catch(err => console.log(err)) 
+    }
+
+    return (
+        <div>
+            <form onSubmit={loginUser}>
+                <label>Email</label>
+                <input type='email' placeholder='enter email...' value={email} onChange={(e) => setEmail(e.target.value)} />
+                <label>Password</label>
+                <input type='password' placeholder='enter password...' value={password} onChange={(e) => setPassword(e.target.value)} />
+                <button type='submit'>Submit</button>
+            </form>
+        </div>
+    )
+*/

@@ -59,8 +59,12 @@ const loginUser = async (req, res) => {
         // check if passwords match
         const match = await comparePassword(password, user.password);
         if (match) {
-            const token = jwt.sign({email: user.email, id: user._id}, process.env.JWT_SECRET, {expiresIn: '30d'});
-            res.cookie('token', token);
+            const token = jwt.sign({email: user.email, id: user._id, categories: user.categories, filter: user.filter, todos: user.todos }, process.env.JWT_SECRET, {expiresIn: '1d'}, (err, token) => {
+                if (err) throw err;
+                //res.cookie('token', token, { sameSite: 'none', secure: true }).json(user)
+                res.cookie('token', token, { sameSite: 'none', secure: true })
+                return res.json({Status: "Success"});
+            })
             //, categories: user.categories, filter: user.filter, todos: user.todos  
          /*   res.status(201).json({
                 _id: user._id,
@@ -72,7 +76,7 @@ const loginUser = async (req, res) => {
                 res.cookie('token', token, { sameSite: 'none', secure: true }).json(user)
             }) */ 
             console.log('logged in');
-            return res.json({Status: "Success"});
+         //   return res.json({Status: "Success"});
         } 
         else {
             res.json({

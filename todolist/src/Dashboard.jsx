@@ -5,21 +5,32 @@ import { useNavigate } from 'react-router-dom';
 import theme from './theme/Theme';
 import Axios from './axiosSetup';
 import { UserContext } from './context/userContext';
-//import { useAuth } from '../context/AuthContext';
 import CreateTask from './components/CreateTask';
 import CreateCategory from './components/CreateCategory';
 import Task from './components/Task';
 import Logout from './components/Logout';
 
-export default function Dashboard() {
-  //  const {user} = useContext(UserContext)
-//    const {user, setUser} = useContext(UserContext);
-    const {user} =  useContext(UserContext);//useAuth();
+export default function Dashboard({protectState}) {
+    const {user, setUser, loggedIn, setLogin} =  useContext(UserContext);//useAuth();
     const navigate = useNavigate();
-    const [todos, setTodos] = useState(user.todos);
-    const [categories, setCategories] = useState(user.categories);
-    const [filter, setFilter] = useState(user.filter);
+    const [todos, setTodos] = useState(null);
+    const [categories, setCategories] = useState(null);
+    const [filter, setFilter] = useState(false);
     const [hover, setHover] = useState(false);
+
+    useEffect(() => {  
+        if(user && !todos) {
+            console.log("Dashboard in useEffect: " + loggedIn)
+            initializeFields();
+//            setLogin(true);
+        }
+    }, [user]);
+
+    const initializeFields = () => {
+        setTodos(user.todos);
+        setCategories(user.categories);
+        setFilter(user.filter);
+    };
 
     const callbackNewCategory = (newCategoriesList) => {
         setCategories(newCategoriesList);
@@ -98,7 +109,7 @@ export default function Dashboard() {
         <ChakraProvider theme={theme} >
         <VStack>
             <h1>Dashboard</h1>
-            {!!user ? (
+            { !!user ? (
                 <Box>
                     <h1>Hello {user.email}!</h1>
                     <Logout />
@@ -112,7 +123,7 @@ export default function Dashboard() {
 }
 
 /* 
-            
+         !!user   
             <h2>{'filter' + filter}</h2>
             <Button onClick={handleFilter}>Filter</Button>
             <CreateCategory update={callbackNewCategory} />

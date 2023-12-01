@@ -8,17 +8,17 @@ import { UserContext } from '../context/userContext';
 
 export default function Logout() {
  //   const {user, setUser} = useContext(UserContext);
-    const {user, setUser} = useContext(UserContext);//useAuth();
+ //   const {user, setUser} = useContext(UserContext);//useAuth();
     const navigate = useNavigate(); 
+    const {user, setUser, loggedIn, setLogin} = useContext(UserContext);
 
     const logoutUser = async (e) => {
         Axios.get('/logout')
         .then(res => {
-         //   setIsLoggedIn(false);
-            //    setUser({})
+            setLogin(false);
+            window.localStorage.setItem("logged-in", JSON.stringify(false));
             setUser(null);
             navigate('/');
-            console.log("In logout: " + user.email);
         }).catch(err => console.log(err));
     }
 
