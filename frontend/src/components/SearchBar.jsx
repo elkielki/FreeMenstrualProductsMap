@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect, createContext } from 'react'
-import { ChakraProvider, Flex, Icon, Heading, Input, Button, Box, Select, Text, IconButton, HStack, VStack, Menu, MenuButton, MenuList, MenuItem, MenuItemOption, MenuGroup, MenuDivider } from '@chakra-ui/react'
-import { DeleteIcon, ChevronRightIcon, AddIcon, EditIcon } from '@chakra-ui/icons'
+import React, { useContext } from 'react';
+import { Input } from '@chakra-ui/react';
 import Axios from '../axiosSetup';
 import { UserContext } from '../context/userContext';
 
+// Returns a search bar to search for a specific station for the list view 
 export default function SearchBar() {
 
     const {
@@ -12,7 +12,11 @@ export default function SearchBar() {
         stationList, setStationList
     } =  useContext(UserContext);
 
+    /* val - user input
+        Search function
+    */
     const handleInput = (val) => {
+        // If no input, then list all the locations
         if (val.length == 0) {
             Axios.get('/getStations')  
             .then(function (response) {
@@ -21,7 +25,7 @@ export default function SearchBar() {
             .catch(function (error) {
                 console.log(error);
             })
-        }
+        } // If at least two letters were inputted, then return locations starting with those letters
         else if (val.length > 2) {
             Axios.get('/getSearch', {params: {searchInput: val}})
             .then(function(response) {

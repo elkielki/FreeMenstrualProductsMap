@@ -1,24 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react';
-import {Button, Center, SimpleGrid, IconButton, HStack, VStack, Image, Menu, MenuButton, MenuList, MenuItem, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon,Text, Box, ButtonGroup, Flex} from '@chakra-ui/react';
-import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
+import React, { useContext } from 'react';
+import { Center, SimpleGrid, IconButton, HStack, VStack, Image, Text, Box, Flex} from '@chakra-ui/react';
+import { DeleteIcon } from '@chakra-ui/icons'
 import Axios from '../axiosSetup';
 import EditLocationForm from './EditLocationForm';
 import { UserContext } from '../context/userContext';
-import MapView from './MapView';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet"; 
 import padImg from '../assets/pad.png';
 import tamponImg from '../assets/tampon.png';
 import extraImg from '../assets/extra.png';
 
-export default function StationItem({handleMapPin}) {
+export default function StationItem() {
+
     const {
         user, setUser, 
         loggedIn, setLoggedIn, 
         stationList, setStationList
     } =  useContext(UserContext);
 
-    const [currPosition, setCurrPosition] = useState(null);
-
+    /*  stationName - name of the station that the user wants deleted
+        Deletes a specific station from database
+    */
     const handleDeleteStation = (stationName) => {
         Axios.put('/deleteStation', {name: stationName})
         .then(function(response) {
@@ -77,8 +77,3 @@ export default function StationItem({handleMapPin}) {
         <Text>Please refresh this page.</Text>
     )
 }
-
-//<MapView coordinates={handleCurrPositionCallback} />
-//<a href="https://www.flaticon.com/free-icons/menstrual-cycle" title="menstrual cycle icons">Menstrual cycle icons created by Soremba - Flaticon</a>
-// <a href="https://www.flaticon.com/free-icons/tampon" title="tampon icons">Tampon icons created by Freepik - Flaticon</a>
-//<a href="https://www.flaticon.com/free-icons/extra" title="extra icons">Extra icons created by Freepik - Flaticon</a>

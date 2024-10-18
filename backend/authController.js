@@ -1,21 +1,14 @@
+// This file contains all the functions related to connecting with the database.
 const User = require('./Models/User');
 const Station = require('./Models/Station');
 const { hashPassword, comparePassword} = require('./auth');
 const jwt = require('jsonwebtoken');
 
-const test = (req, res) => {
-    return res.status(200).send('Hello');
-}
-
-const testPost = (req, res) => {
-      const name = req.body.name;
-      return res.json({name: name});
-}
-
+// Creates and adds user information to database
 const registerUser = async (req, res) => {
     try {
        const {email, password, accessCode} = req.body;
-        // check if password is good
+        // Check password requirements
         if (!password || password.length < 6) {
             return res.json({
                 error: 'Password is required to be at least 6 characters long'
@@ -25,19 +18,20 @@ const registerUser = async (req, res) => {
             return res.json({
                 error: 'Email is required.'
             })
-        } else if (accessCode != 'cake') {
+        } // TODO - probably should have a function to create unique access codes
+        else if (accessCode != 'cake') {
             return res.json({
                 error: 'Access code is invalid.'
             })
         };
-        // check email
+        // Check if user already exists
         const exist = await User.findOne({email})
         if (exist) {
             return res.json({
                 error: 'Email is taken already'
             })
         }
-
+        // Create user
         const hashedPassword = await hashPassword(password);
         const user = await User.create({
             email: email, 
@@ -48,12 +42,12 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Login Endpoint
+// Checks if user login information matches a user in the database
 const loginUser = async (req, res) => {
     try {
         const {email, password} = req.body;
 
-        // check if user exists
+        // Check if user exists
         const user = await User.findOne({email});
         if (!user) {
             return res.json({
@@ -61,7 +55,7 @@ const loginUser = async (req, res) => {
             })
         }
 
-        // check if passwords match
+        // If passwords match as well, then generate and sign jwt token
         const match = await comparePassword(password, user.password);
         if (match) {
             const accessToken = jwt.sign(
@@ -84,16 +78,15 @@ const loginUser = async (req, res) => {
                     expiresIn: '3d'
                 }
             )   
-            
             res.cookie('accessToken', accessToken, {
                 sameSite: 'none', 
                 secure: true,
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 24 * 60 * 60 * 1000 // 1 day
             }).json(user) 
             res.cookie('refreshToken', refreshToken, {
                 sameSite: 'none', 
                 secure: true,
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
             }).json(user)   
         } 
         else {
@@ -106,12 +99,15 @@ const loginUser = async (req, res) => {
     }  
 };
 
+// Removes token at logout
 const logoutUser = async (req, res) => {
     res.clearCookie('token');
     return res.json({Status: "Success"});
 }
 
+// Gets user information
 const getProfile = async (req, res) => {
+    // Checks if access token or refresh token is valid before sending user info
     const accessToken = req.cookies.accessToken;
     if (!accessToken) {
         const refreshToken = req.cookies.refreshToken;
@@ -130,7 +126,7 @@ const getProfile = async (req, res) => {
                     {
                         expiresIn: '3d'
                     })
-                    res.cookie('accessToken', accessToken, {maxAge: 60000})
+                    res.cookie('accessToken', accessToken, {maxAge: 24 * 60 * 60 * 1000})
                 }
             })
         }
@@ -145,11 +141,12 @@ const getProfile = async (req, res) => {
     }
 }
 
+// Gets all the list of stations 
 const getStationList = async (req, res) => {
     const station = await Station.find();
     if (!station) {
         return res.json({
-            error: 'No user found'
+            error: 'No stations found'
         })
     }
     else {
@@ -157,6 +154,7 @@ const getStationList = async (req, res) => {
     }
 }
 
+// Adds a new station to the database
 const addNewStation = async (req, res) => {
     try {
         const {name, pads, tampons, other, lat, long} = req.body;
@@ -187,6 +185,7 @@ const addNewStation = async (req, res) => {
     }
 }
 
+// Finds station by name and updates menstrual product quantities to given inputs
 const editStation = async (req, res) => {
     try {
         const {name, pads, tampons, other} = req.body;
@@ -205,6 +204,7 @@ const editStation = async (req, res) => {
     }
 }
 
+// Deletes a station from the database
 const deleteStation = async (req, res) => {
     try {
         const {name} = req.body;
@@ -215,6 +215,7 @@ const deleteStation = async (req, res) => {
     }
 }
 
+// Gets list of locations with locations closest to the current user first
 const sortDistance = async (req, res) => {
     try {
         const update = await Station.find({
@@ -233,6 +234,7 @@ const sortDistance = async (req, res) => {
     }
 }
 
+// Gets list of locations in alphabetical order
 const sortAlphabetical = async (req, res) => {
     try {
         const update = await Station.find().collation({locale:'en',strength: 2}).sort({name:1})
@@ -242,6 +244,7 @@ const sortAlphabetical = async (req, res) => {
     }
 }
 
+// Gets all locations that start with the given search input
 const getSearch = async (req, res) => {
     try {
         const update = await Station.find({name: { $regex: req.query.searchInput, $options: "i" }})
@@ -252,8 +255,6 @@ const getSearch = async (req, res) => {
 }
 
 module.exports = {
-    test,
-    testPost,
     logoutUser,
     registerUser, 
     loginUser,

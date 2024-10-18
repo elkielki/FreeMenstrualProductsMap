@@ -1,11 +1,14 @@
-import {useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@chakra-ui/react';
-import toast from 'react-hot-toast';
 import Axios from '../axiosSetup';
 import { UserContext } from '../context/userContext';
-import { ChakraProvider, Center, Flex, FormControl, FormLabel, FormErrorMessage, FormHelperText, Button, Box, Input, Heading, Text, IconButton, VStack } from '@chakra-ui/react';
+import { 
+    Flex, Box, Heading,
+    FormControl, FormLabel,
+    Button,  Input 
+} from '@chakra-ui/react';
 
+// Returns the user registration form
 export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -13,6 +16,7 @@ export default function Register() {
     const navigate = useNavigate();
     const {user, setUser, loggedIn, setLogin} = useContext(UserContext);
 
+    // Sends user info to backend to check if user exists and to store info in database
     const registerUser = (e) => {
         e.preventDefault();
         Axios.post('/register', {email, password, accessCode})
@@ -31,7 +35,6 @@ export default function Register() {
             marginTop='10vh'
             marginX='10vw'
             border='2px' 
-        //    borderColor='#E0FBFC'
         >   
             <Heading as='h1' size='lg' marginTop='1%' marginBottom='5%' textAlign='center'>Register</Heading>
             <FormControl>

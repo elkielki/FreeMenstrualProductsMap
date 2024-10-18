@@ -1,9 +1,8 @@
+// This file contains all the get, put, and post requests.
 const express = require('express');
 const router = express.Router({mergeParams: true});
 const cors = require('cors');
 const { 
-    test, 
-    testPost, 
     logoutUser, 
     registerUser, 
     loginUser, 
@@ -17,7 +16,6 @@ const {
     getSearch 
 } = require('./authController');
 
-// middleware
 router.use(
     cors({
         credentials: true,
@@ -25,20 +23,18 @@ router.use(
     })
 ) 
 
-/*
-router.get('/test', test);
-router.post('/testPost', testPost); 
-*/
-router.get('/logout', logoutUser);
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.get('/profile', getProfile);
+router.get('/getSearch', getSearch);
 router.get('/getStations', getStationList);
+router.get('/logout', logoutUser);
+router.get('/profile', getProfile);
+router.get('/sortAlphabetical', sortAlphabetical);
+router.get('/sortDistance', sortDistance);
+
 router.post('/addNewStation', addNewStation);
+router.post('/login', loginUser);
+router.post('/register', registerUser);
+
 router.put('/editStation', editStation);
 router.put('/deleteStation', deleteStation);
-router.get('/sortDistance', sortDistance);
-router.get('/sortAlphabetical', sortAlphabetical);
-router.get('/getSearch', getSearch);
 
 module.exports = router

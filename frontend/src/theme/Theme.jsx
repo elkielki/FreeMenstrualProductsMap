@@ -17,11 +17,10 @@ const theme = extendTheme({
 
     components: {
         Button: {
-        // 1. We can update the base styles
             baseStyle: {
-                fontWeight: 'bold', // Normally, it is "semibold"
+                fontWeight: 'bold',
                 bg: '#C2DFE3',
-                color: '#253237',  //"#5C6B73",
+                color: '#253237',
                 _hover: {
                     background: '#405861',
                     color: "#C2DFE3",
@@ -31,7 +30,7 @@ const theme = extendTheme({
         IconButton: {
             baseStyle: {
                 bg: '#C2DFE3',
-                color: '#253237',  //"#5C6B73",
+                color: '#253237',
                 _hover: {
                     background: '#405861',
                     color: "#C2DFE3",
@@ -39,7 +38,7 @@ const theme = extendTheme({
             },
             deleteIconStyle: {
                 bg: '#C2DFE3',
-                color: '#253237',  //"#5C6B73",
+                color: '#253237',
                 _hover: {
                     background: '#405861',
                     color: "#C2DFE3",
@@ -59,4 +58,4 @@ const theme = extendTheme({
     }
 })
 
-export default theme
+export default theme;

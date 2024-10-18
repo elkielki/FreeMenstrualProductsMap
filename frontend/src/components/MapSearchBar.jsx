@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { useMap } from "react-leaflet";
 import { OpenStreetMapProvider, GeoSearchControl } from 'leaflet-geosearch';
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
 import "leaflet-geosearch/dist/geosearch.umd.js";
 
+// Creates the search bar for the map
 export default function MapSearchBar() {
     const map = useMap();
 
     useEffect(() => {
         const provider = new OpenStreetMapProvider();
 
+        // Search bar settings
         const searchControl = new GeoSearchControl({
             provider: provider,
             style: "bar",
